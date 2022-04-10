@@ -2,13 +2,23 @@ package br.com.elo7.explorandomarte.model;
 
 public class Position {
 
-	private char[][] actualPosition;
+	private int actualXPosition;
+	
+	private int actualYPosition;
 
-	public char[][] getActualPosition() {
-		return actualPosition;
+	public int getActualXPosition() {
+		return actualXPosition;
 	}
 
-	public void setActualPosition(char[][] actualPosition) {
-		this.actualPosition = actualPosition;
+	public void setActualXPosition(int actualXPosition) {
+		this.actualXPosition = actualXPosition;
+	}
+
+	public int getActualYPosition() {
+		return actualYPosition;
+	}
+
+	public void setActualYPosition(int actualYPosition) {
+		this.actualYPosition = actualYPosition;
 	}
 }
