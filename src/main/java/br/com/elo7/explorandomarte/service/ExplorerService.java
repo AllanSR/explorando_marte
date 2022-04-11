@@ -6,9 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.elo7.explorandomarte.model.Direction;
 import br.com.elo7.explorandomarte.model.InitialField;
-import br.com.elo7.explorandomarte.model.Position;
 import br.com.elo7.explorandomarte.model.Probe;
 
 @Service
@@ -18,17 +16,17 @@ public class ExplorerService {
 	
 	private Probe probe;
 	
-	private InitialField initializeField(int x, int y) {
-			field = new InitialField(x, y);
-			return field;
+	public ResponseEntity<?> initializeField(InitialField initialField) {
+		field = initialField;
+		return new ResponseEntity<>(field, HttpStatus.OK);
+	}
+
+	public ResponseEntity<?> initializeProbe(Probe initialProbe) {
+		probe = initialProbe;
+		return new ResponseEntity<>(probe, HttpStatus.OK);
 	}
 	
-	private Probe initializeProbe(Position position, Direction direction) {
-		probe = new Probe (position, direction);
-		return probe;
-	}
-	
-	private ResponseEntity<?> processInstructions(List<String> instructions){
+	public ResponseEntity<?> processInstructions(List<String> instructions){
 		if (instructions.isEmpty())
 			return new ResponseEntity<>(HttpStatus.OK);
 		if(!isDirectionsGood(instructions)) {
@@ -40,12 +38,12 @@ public class ExplorerService {
 		
 		operateInstructions(instructions);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(probe, HttpStatus.OK);
 	}
 	
-	private ResponseEntity<?> returnPosition(){
+	public ResponseEntity<?> returnPosition(){
 		if (isProbeInitialized()) {
-			return ResponseEntity.ok(probe.getDirection().getActualDirection());			
+			return new ResponseEntity<>(probe.getPosition(), HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
