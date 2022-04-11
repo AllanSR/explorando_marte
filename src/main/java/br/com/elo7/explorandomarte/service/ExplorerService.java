@@ -17,21 +17,27 @@ public class ExplorerService {
 	private Probe probe;
 	
 	public ResponseEntity<?> initializeField(InitialField initialField) {
+		if(checkInitialFieldIsNull(initialField))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 		field = initialField;
 		return new ResponseEntity<>(field, HttpStatus.OK);
 	}
 
 	public ResponseEntity<?> initializeProbe(Probe initialProbe) {
+		if(checkInitialProbeIsNull(initialProbe))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 		probe = initialProbe;
 		return new ResponseEntity<>(probe, HttpStatus.OK);
 	}
 
 	public ResponseEntity<?> processInstructions(List<String> instructions){
+		if(!isDirectionsGood(instructions) || !isFieldInitialized() || !isProbeInitialized())
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 		if (instructions.isEmpty())
 			return new ResponseEntity<>(HttpStatus.OK);
-		if(!isDirectionsGood(instructions) || !isFieldInitialized() || !isProbeInitialized()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 
 		operateInstructions(instructions);
 
@@ -60,11 +66,11 @@ public class ExplorerService {
 
 	private boolean isDirectionsGood(List<String> directions) {		
 		for (String direction : directions)
-			if (!direction.equalsIgnoreCase("L") || !direction.equalsIgnoreCase("R") || !direction.equalsIgnoreCase("M"))
+			if (!direction.equalsIgnoreCase("L") && !direction.equalsIgnoreCase("R") && !direction.equalsIgnoreCase("M"))
 				return false;
 		return true;
 	}
-
+;
 	private void setProbeDirection(String direction) {
 		if(probe.getDirection().getActualDirection().equalsIgnoreCase("N")) {
 			if (direction.equalsIgnoreCase("L")) {
@@ -122,5 +128,16 @@ public class ExplorerService {
 	
 	private boolean isFieldInitialized() {
 		return field != null;		
+	}
+	
+	private boolean checkInitialFieldIsNull(InitialField field) {
+		return field == null;
+	}
+	
+	private boolean checkInitialProbeIsNull(Probe probe){
+		return probe == null
+				|| probe.getDirection() == null 
+				|| probe.getDirection().getActualDirection() == null 
+				|| probe.getPosition() == null;
 	}
 }
