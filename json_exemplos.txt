@@ -1,0 +1,19 @@
+/initialize-probe
+
+{
+"position":{
+	"actualXPosition":0,
+	"actualYPosition":0
+},
+"direction": {
+	"actualDirection": "W"
+	}
+}
+_______________________________________
+/initialize-field
+
+{
+	"maxX":5,
+	"maxY":5
+}
+_______________________________________

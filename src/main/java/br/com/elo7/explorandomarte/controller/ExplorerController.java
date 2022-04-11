@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.elo7.explorandomarte.model.InitialField;
 import br.com.elo7.explorandomarte.model.Probe;
@@ -19,17 +20,17 @@ public class ExplorerController {
 	private ExplorerService service;
 
 	@PostMapping(value = "/initialize-probe")
-    public ResponseEntity<?> setInitialProbePosition(Probe probe) {
+    public ResponseEntity<?> setInitialProbePosition(@RequestBody Probe probe) {
 		return service.initializeProbe(probe);
     }
 	
 	@PostMapping(value = "/initialize-field")
-    public ResponseEntity<?> setInitialField(InitialField field) {
+    public ResponseEntity<?> setInitialField(@RequestBody InitialField field) {
 		return service.initializeField(field);
     }
 	
 	@PostMapping(value = "/instructions")
-    public ResponseEntity<?> executeInstructions(List<String> instructions) {
+    public ResponseEntity<?> executeInstructions(@RequestBody List<String> instructions) {
         return service.processInstructions(instructions);
     }
 	

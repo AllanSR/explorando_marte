@@ -25,50 +25,46 @@ public class ExplorerService {
 		probe = initialProbe;
 		return new ResponseEntity<>(probe, HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<?> processInstructions(List<String> instructions){
 		if (instructions.isEmpty())
 			return new ResponseEntity<>(HttpStatus.OK);
-		if(!isDirectionsGood(instructions)) {
+		if(!isDirectionsGood(instructions) || !isFieldInitialized() || !isProbeInitialized()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if (!isFieldInitialized() || !isProbeInitialized()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
+
 		operateInstructions(instructions);
-		
+
 		return new ResponseEntity<>(probe, HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<?> returnPosition(){
 		if (isProbeInitialized()) {
-			return new ResponseEntity<>(probe.getPosition(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(probe.getPosition(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
 	}
-	
+
 	private void operateInstructions(List<String> directions) {
-		
+
 		for (String direction : directions) {
 			if (direction.equalsIgnoreCase("L") || direction.equalsIgnoreCase("R"))
 				setProbeDirection(direction);
-			
+
 			if (direction.equalsIgnoreCase("M")) {
 				moveProbe();
 			}
 		}
 	}	
-	
+
 	private boolean isDirectionsGood(List<String> directions) {		
 		for (String direction : directions)
 			if (!direction.equalsIgnoreCase("L") || !direction.equalsIgnoreCase("R") || !direction.equalsIgnoreCase("M"))
 				return false;
 		return true;
 	}
-	
+
 	private void setProbeDirection(String direction) {
 		if(probe.getDirection().getActualDirection().equalsIgnoreCase("N")) {
 			if (direction.equalsIgnoreCase("L")) {
@@ -107,7 +103,7 @@ public class ExplorerService {
 			}
 		}
 	}
-	
+
 	private void moveProbe() {
 		if(probe.getDirection().getActualDirection().equalsIgnoreCase("N")){
 			probe.getPosition().setActualXPosition(probe.getPosition().getActualXPosition() + 1);
