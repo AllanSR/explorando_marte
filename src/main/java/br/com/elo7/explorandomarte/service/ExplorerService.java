@@ -115,7 +115,7 @@ public class ExplorerService {
 			probe.getPosition().setActualXPosition(probe.getPosition().getActualXPosition() - 1);
 		} else if(probe.getDirection().getActualDirection().equalsIgnoreCase("E")) {
 			probe.getPosition().setActualXPosition(probe.getPosition().getActualYPosition() + 1);
-		} else {
+		} else if(probe.getDirection().getActualDirection().equalsIgnoreCase("W")){
 			probe.getPosition().setActualXPosition(probe.getPosition().getActualYPosition() - 1);
 		}
 	}
